@@ -9,6 +9,7 @@ import MyTeamScreen from './screens/MyTeamScreen'
 import LeaderScreen from './screens/LeaderScreen'
 import MapScreen from './screens/MapScreen'
 import IndividualTeamScreen from './screens/IndividualTeamScreen'
+import PersonDataScreen from './screens/PersonDataScreen'
 
 const LeadersNavigator = createStackNavigator(
   {
@@ -18,6 +19,9 @@ const LeadersNavigator = createStackNavigator(
     IndividualTeam:{
       screen: IndividualTeamScreen,
     },
+    PersonData:{
+      screen: PersonDataScreen
+    }
 
   },
   {

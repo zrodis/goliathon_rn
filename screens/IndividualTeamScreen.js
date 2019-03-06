@@ -58,6 +58,13 @@ class IndividualTeamScreen extends React.Component {
         </View>
       <IndividualTeamList
         teamData ={this.state.teamData}
+        onPressPerson={(personObj) => {
+          if(this.props.onPressPerson){
+            return this.props.onPressPerson(personObj)
+          }else if(this.props.navigation.getParam('onPressPerson')){
+            return this.props.navigation.getParam('onPressPerson')(personObj)
+          }
+        }}
 
       />
       </View>
@@ -70,6 +77,7 @@ const styles = StyleSheet.create({
   container:{
     flex:1,
     flexDirection:'column',
+    marginBottom:45,
   },
   teamContainer:{
     // flex:1,

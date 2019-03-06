@@ -1,8 +1,8 @@
 import React from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from "react-native";
 import PropTypes from 'prop-types'
 import {GRAPH_HEADER_STYLE, LIST_STYLE, G1_COLOR, G2_COLOR, G3_COLOR,} from '../utils/styleConstants'
-
+import {float100} from '../utils/mathHelper'
 //flex sizes
 const RANK_COLUMN = 1
 const NAME_COLUMN = 3
@@ -11,17 +11,11 @@ const ROPE_COLUMN = 1.5
 const G_COLUMN= 0.5
 const OBST_COLUMN = 1
 
-const float100 = (n) => {
-  let num = Number(n)
-  if(num > 900) return ''
-  return (Math.round(num*100) / 100) + 's'
-}
+
 
 class IndividualTeamItem extends React.Component {
   render(){
-
     const {index, name, score, rope, g1, g2, g3, obst, gender } = this.props
-
     let bgColor = gender.toUpperCase() === "M" ? "#cdf" :
                     gender.toUpperCase() === "F" ? "#fde" : "#fff"
 
@@ -31,32 +25,37 @@ class IndividualTeamItem extends React.Component {
 
     return (
       <View style={{backgroundColor:bgColor}}>
-        <View style={[LIST_STYLE.lineItem]}>
-          <View style={[{flex:RANK_COLUMN  }, {textAlign:'center'}]}>
-            <Text style={[LIST_STYLE.text]}>{parseInt(index) + 1 + '.'}</Text>
+        <TouchableOpacity onPress={() => {
+          const rank = index
+          return this.props.onPressPerson({bib: this.props.bib})
+        }}>
+          <View style={[LIST_STYLE.lineItem]}>
+            <View style={[{flex:RANK_COLUMN}]}>
+              <Text style={[LIST_STYLE.text, {textAlign:'center'}]}>{parseInt(index) + 1 + '.'}</Text>
+            </View>
+            <View style={{flex:NAME_COLUMN }}>
+              <Text style={LIST_STYLE.text}>{name}</Text>
+            </View>
+            <View style={{flex:POINTS_COLUMN}}>
+              <Text style={LIST_STYLE.text}>{score}</Text>
+            </View>
+            <View style={{flex:ROPE_COLUMN}}>
+              <Text style={LIST_STYLE.text}>{rope}</Text>
+            </View>
+            <View style={{flex:G_COLUMN}}>
+              <Text style={LIST_STYLE.text}>{g1}</Text>
+            </View>
+            <View style={{flex:G_COLUMN}}>
+              <Text style={LIST_STYLE.text}>{g2}</Text>
+            </View>
+            <View style={{flex:G_COLUMN}}>
+              <Text style={LIST_STYLE.text}>{g3}</Text>
+            </View>
+            <View style={{flex:OBST_COLUMN}}>
+              <Text style={[LIST_STYLE.text]}>{obst}</Text>
+            </View>
           </View>
-          <View style={{flex:NAME_COLUMN }}>
-            <Text style={LIST_STYLE.text}>{name}</Text>
-          </View>
-          <View style={{flex:POINTS_COLUMN}}>
-            <Text style={LIST_STYLE.text}>{score}</Text>
-          </View>
-          <View style={{flex:ROPE_COLUMN}}>
-            <Text style={LIST_STYLE.text}>{rope}</Text>
-          </View>
-          <View style={{flex:G_COLUMN}}>
-            <Text style={LIST_STYLE.text}>{g1}</Text>
-          </View>
-          <View style={{flex:G_COLUMN}}>
-            <Text style={LIST_STYLE.text}>{g2}</Text>
-          </View>
-          <View style={{flex:G_COLUMN}}>
-            <Text style={LIST_STYLE.text}>{g3}</Text>
-          </View>
-          <View style={{flex:OBST_COLUMN}}>
-            <Text style={[LIST_STYLE.text]}>{obst}</Text>
-          </View>
-        </View>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -68,7 +67,7 @@ class IndividualTeamList extends React.Component {
     return(
       <View style={styles.container}>
         <View style={[GRAPH_HEADER_STYLE.headerBar]}>
-          <View style={{flex:RANK_COLUMN  }}>
+          <View style={[{flex:RANK_COLUMN}]}>
             <Text style={[GRAPH_HEADER_STYLE.text, {textAlign:'center'}]}>Rank</Text>
           </View>
           <View style={{flex:NAME_COLUMN }}>
@@ -100,6 +99,7 @@ class IndividualTeamList extends React.Component {
 
             return <IndividualTeamItem
                       index={index}
+                      bib={item.bibNo}
                       name={item.firstName + ' ' + item.lastName}
                       score={Math.round(item.score)}
                       rope={float100(item.tiebreaker)}
@@ -108,6 +108,7 @@ class IndividualTeamList extends React.Component {
                       onCourse={item.onCourse}
                       gender={item.gender}
                       disableGenderColor={this.props.disableGenderColor}
+                      onPressPerson={(personObj) => this.props.onPressPerson(personObj)}
                   />
           }}
           keyExtractor={(item) => {

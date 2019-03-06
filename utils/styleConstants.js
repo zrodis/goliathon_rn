@@ -3,9 +3,9 @@ import { StyleSheet, Text, View } from "react-native";
 
 
 const BUTTON_COLOR = '#55c'
-const G1_COLOR = '#2b7'
-const G2_COLOR = '#a77'
-const G3_COLOR = '#27b'
+const G1_COLOR = '#009900'
+const G2_COLOR = '#b38600'
+const G3_COLOR = '#004466'
 
 const GRAPH_HEADER_STYLE = StyleSheet.create({
   headerBar:{

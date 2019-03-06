@@ -68,9 +68,15 @@ class LeaderScreen extends React.Component {
     })
   }
 
-  navigateToIndividualTeam = ({rank, teamName, g1, g2, g3, score, onCourse}) => {
+  navigateToIndividualTeam = ({rank, teamName, g1, g2, g3, score, onCourse, onPressPerson}) => {
     this.props.navigation.navigate('IndividualTeam', {
-      rank, teamName, g1, g2, g3, score, onCourse
+      rank, teamName, g1, g2, g3, score, onCourse, onPressPerson
+    })
+  }
+
+  navigateToPerson = (data) => {
+    this.props.navigation.navigate('PersonData', {
+      bib: data.bib
     })
   }
 
@@ -115,6 +121,7 @@ class LeaderScreen extends React.Component {
             <QualifyingTeams
               qualifyingTeamsData={this.state.qualifyingTeamsData}
               onPressTeam = {(teamObj) => this.navigateToIndividualTeam(teamObj)}
+              onPressPerson = {(personObj) => this.navigateToPerson(personObj)}
               />
           :
 
@@ -122,7 +129,10 @@ class LeaderScreen extends React.Component {
           <View>
             <IndividualTeamList
               teamData ={this.state.top50Male}
-              disableGenderColor={true}/>
+              disableGenderColor={true}
+              onPressPerson = {(personObj) => this.navigateToPerson(personObj)}
+
+            />
 
           </View>
 
@@ -131,13 +141,17 @@ class LeaderScreen extends React.Component {
            <View>
              <IndividualTeamList
                teamData ={this.state.top50Female}
-               disableGenderColor={true}/>
+               disableGenderColor={true}
+               onPressPerson = {(personObj) => this.navigateToPerson(personObj)}
+              />
            </View>
           :
            this.state.category === "Rope Climb" ?
            <View>
              <IndividualTeamList
                teamData ={this.state.ropeData}
+               onPressPerson = {(personObj) => this.navigateToPerson(personObj)}
+
             />
            </View>
           : null

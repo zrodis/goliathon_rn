@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from "react-native";
 import PropTypes from 'prop-types'
-import {GRAPH_HEADER_STYLE, LIST_STYLE, G1_COLOR,G2_COLOR,G3_COLOR,} from '../utils/styleConstants'
+import { GRAPH_HEADER_STYLE, LIST_STYLE, G1_COLOR, G2_COLOR, G3_COLOR } from '../utils/styleConstants'
 
 //flex sizes
 const RANK_COLUMN = 1
@@ -14,7 +14,6 @@ let highScore = 100
 class ScoreGraph extends React.Component{
   render(){
     const {g1, g2, g3, score} = this.props
-
 
     let totalRatio = score / highScore
     let flexGraph = totalRatio
@@ -69,14 +68,14 @@ const graphStyles = StyleSheet.create({
 class QualifyingTeamsItem extends React.Component {
   render(){
 
-    const {index, teamName, g1, g2, g3, score, onCourse} = this.props
+    const {index, teamName, g1, g2, g3, score, onCourse, onPressPerson} = this.props
 
     return (
       <View >
         <TouchableOpacity onPress={() => {
           const rank = index
           return this.props.onPressTeam({
-            rank, teamName, g1, g2, g3, score, onCourse}
+            rank, teamName, g1, g2, g3, score, onCourse, onPressPerson}
           )}
         }>
           <View style={LIST_STYLE.lineItem}>
@@ -95,9 +94,6 @@ class QualifyingTeamsItem extends React.Component {
           </View>
         </TouchableOpacity>
       </View>
-
-
-
     )
   }
 }
@@ -106,7 +102,7 @@ class QualifyingTeamsItem extends React.Component {
 class QualifyingTeams extends React.Component {
   render(){
     return(
-      <View>
+      <View style={styles.container}>
         <View style={[GRAPH_HEADER_STYLE.headerBar]}>
           <View style={{flex:RANK_COLUMN + 0.2 }}>
             <Text style={[GRAPH_HEADER_STYLE.text, {textAlign:'center'}]}>Rank</Text>
@@ -127,12 +123,13 @@ class QualifyingTeams extends React.Component {
             highScore = item.score > highScore ? item.score : highScore
 
             return <QualifyingTeamsItem
-                      onPressTeam={(teamObj) => this.props.onPressTeam(teamObj)}
                       index={index}
                       g1={item.g1} g2={item.g2} g3={item.g3} key={item._id}
                       onCourse={item.onCourse}
                       score={Math.round(item.score)}
                       teamName={item.teamID}
+                      onPressTeam={(teamObj) => this.props.onPressTeam(teamObj)}
+                      onPressPerson={(teamObj) => this.props.onPressPerson(teamObj)}
                   />
           }}
           keyExtractor={(item) => {//keyExtractor, basically a map()
@@ -145,6 +142,7 @@ class QualifyingTeams extends React.Component {
 }
 
 const styles = StyleSheet.create({
-
+  container: {
+  }
 })
 export default QualifyingTeams
